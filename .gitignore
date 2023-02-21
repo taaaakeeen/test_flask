@@ -1,0 +1,14 @@
+# *.env
+*.yaml
+*.json
+*.jpg
+*.txt
+*.zip
+*.mp4
+*.pyc
+*.pt
+*.cache
+*.png
+*.csv
+*.onnx
+*events.out*
