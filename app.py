@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
 from api.v1.test import Test
+from api.v1.account import Account
 import database.test_flask_database as DB
 from dotenv import load_dotenv
 import os
@@ -21,6 +22,7 @@ class App():
 
     def init_api(self):
         self.api.add_resource(Test, "/api/v1/test")
+        self.api.add_resource(Account, "/api/v1/account")
 
     def post(self):
         pass

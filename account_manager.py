@@ -1,21 +1,12 @@
 from database.user_database import Session, User
-from werkzeug.security import check_password_hash
-import hashlib
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class AccountManager:
     def __init__(self):
         self.session = Session()
-    
-    def hash_password(password):
-        # 文字列をバイト列に変換
-        password_bytes = password.encode('utf-8')
-        # SHA-256アルゴリズムでハッシュ化
-        hashed_bytes = hashlib.sha256(password_bytes).digest()
-        # ハッシュ化されたバイト列を16進数の文字列に変換して返す
-        return hashed_bytes.hex()
 
-        
     def add_user(self, user_id, user_name, password, email):
+        password = self.to_hash_password(password)
         user = User(user_id=user_id, user_name=user_name, email=email, password=password)
         self.session.add(user)
         self.session.commit()
@@ -38,6 +29,7 @@ class AccountManager:
         if email:
             user.email = email
         if password:
+            password = self.to_hash_password(password)
             user.password = password
         self.session.commit()
         self.session.close()
@@ -47,6 +39,9 @@ class AccountManager:
         self.session.delete(user)
         self.session.commit()
         self.session.close()
+
+    def to_hash_password(self, password):
+        return generate_password_hash(password, method='sha512', salt_length=16)
 
     def authenticate_user(self, user_id, password):
         # ユーザーIDが存在するかチェックする
@@ -60,46 +55,49 @@ class AccountManager:
         else:
             return False
 
-if __name__ == '__main__':
-    pass
-
-    # manager = AccountManager()
-    # manager.add_user('ken1991', 'takahashi kenta', '1234', 'kenta@gmail.com')
-
-    # manager = AccountManager()
-    # user = manager.get_user("ken1991")
-    # print(user.user_id, user.user_name, user.password, user.email)
-
-    # manager = AccountManager()
-    # manager.update_user("ken1991", user_name='takahashi kenta', email="kenta@gmail.com")
-
-    # manager = AccountManager()
-    # manager.delete_user("ken1991")
+def add_user():
+    manager = AccountManager()
+    manager.add_user('ken1991', 'takahashi kenta', 'hogepiyo', 'ken@gmail.com')
 
     # manager = AccountManager()
     # manager.add_user('wataru', 'takahashi wataru', '5678', 'wataru@gmail.com')
 
+def get_user():
+    manager = AccountManager()
+    user = manager.get_user("ken1991")
+    print(user.user_id, user.user_name, user.password, user.email)
+
+def update_user():
+    manager = AccountManager()
+    # manager.update_user("ken1991", user_name='takahashi kenta', email="kenta@gmail.com")
+    manager.update_user("ken1991", password='1234')
+
     # manager = AccountManager()
     # manager.update_user("wataru1970", user_name='wataru-takahashi', email="wataru1970@gmail.com")
 
-    # manager = AccountManager()
-    # users = manager.get_all_users()
-    # for user in users:
-    #     print(user.user_id, user.user_name, user.email)
+def delete_user():
+    manager = AccountManager()
+    manager.delete_user("ken1991")
 
-    password = '1234'
+def get_all_users():
+    manager = AccountManager()
+    users = manager.get_all_users()
+    for user in users:
+        print(user.user_id, user.user_name, user.email)
 
-    
+def authenticate_user():
+    manager = AccountManager()
+    flg = manager.authenticate_user("ken1991", "1234")
+    print(flg)
+
+if __name__ == '__main__':
+    # add_user()
+    # update_user()
+    # authenticate_user()
+    pass
 
 
-    # 文字列をバイト列に変換
-    password_bytes = password.encode('utf-8')
-    # SHA-256アルゴリズムでハッシュ化
-    hashed_bytes = hashlib.sha256(password_bytes).digest()
-    # ハッシュ化されたバイト列を16進数の文字列に変換して返す
-    hashed_password = hashed_bytes.hex()
 
-    print(check_password_hash(hashed_password, password))
 
 
 

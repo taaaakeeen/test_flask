@@ -18,8 +18,8 @@ class User(Base):
 
     user_id = Column(String(50), primary_key=True)
     user_name = Column(String(50), unique=True, nullable=False)
-    password = Column(String(50), nullable=False)
-    email = Column(String(120), unique=True, nullable=False)
+    password = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
 
     def __init__(self, user_id, user_name, password, email):
         self.user_id = user_id
