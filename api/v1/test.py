@@ -2,12 +2,21 @@ from flask_restful import Resource
 import database.test_flask_database as DB
 from database.test_flask_database import Users, Foods
 from flask import request
+from login_manager import LoginManager
 
 class Test(Resource):
     def __init__(self):
         self.getData = request.args.to_dict()
 
     def get(self):
+
+        # 防御魔法
+        ##########################################################
+        result = LoginManager().protego()
+        if result["defense"]:
+            return result["response"], result["status_code"]
+        ##########################################################
+
         args = self.getData
         print(args)
 
@@ -50,3 +59,10 @@ class Test(Resource):
 
     def delete(self):
         pass
+
+'''
+
+http://127.0.0.1:3000/api/v1/test?type=1
+
+
+'''

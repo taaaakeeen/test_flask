@@ -57,10 +57,10 @@ class AccountManager:
 
 def add_user():
     manager = AccountManager()
-    manager.add_user('ken1991', 'takahashi kenta', 'hogepiyo', 'ken@gmail.com')
+    manager.add_user('takaken1991', 'takahashi kenta', 'hogepiyo', 'kenta1991@gmail.com')
 
-    # manager = AccountManager()
-    # manager.add_user('wataru', 'takahashi wataru', '5678', 'wataru@gmail.com')
+    manager = AccountManager()
+    manager.add_user('wataru', 'takahashi wataru', 'password', 'wataru@gmail.com')
 
 def get_user():
     manager = AccountManager()
